@@ -1,4 +1,4 @@
-package main_1
+package main
 
 // 线性表顺序存储结构（数组实现）
 
