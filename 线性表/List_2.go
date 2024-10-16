@@ -23,6 +23,12 @@ const (
 	OK    = 1  // 操作成功返回结果
 )
 
+func NewList() *List {
+	return &List{
+		head: &Node{},
+	}
+}
+
 // GetElem 找到链表L中第i个位置的元素，并用e返回 （注意：链表存在头结点）
 func (L *List) GetElem(i int, e *int) int {
 	j := 1          // 计数器
@@ -123,4 +129,19 @@ func (L *List) Print() {
 	}
 }
 
-func main() {}
+func main() {
+	L := NewList()
+	L.CreateListHead(10)
+	L.Print()
+	fmt.Println()
+	L.ListInsert(4, 11)
+	L.Print()
+	fmt.Println()
+	e := 0
+	L.ListDelete(9, &e)
+	L.Print()
+	fmt.Println()
+	fmt.Println(e)
+	L.GetElem(7, &e)
+	fmt.Println(e)
+}
