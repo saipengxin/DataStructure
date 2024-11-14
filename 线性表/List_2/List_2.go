@@ -11,6 +11,7 @@ import (
 type Node struct {
 	data int   // 节点数据存储
 	next *Node // 指向下一个节点的指针
+	// prior *Node // 指向前一个节点的指针
 }
 
 // 定义链表结构体
