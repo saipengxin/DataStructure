@@ -14,15 +14,9 @@ func buildNext(pattern string) []int {
 	next[0] = 0
 	// 从 i=1 开始计算 next 数组
 	for i := 1; i < m; i++ {
-		fmt.Println("==============================")
-		fmt.Printf("%#v\n", pattern)
-		fmt.Printf("%#v\n", i)
-		fmt.Printf("%c\n", pattern[i])
-		fmt.Printf("%c\n", pattern[j])
-		fmt.Println("==============================")
 		// 当不匹配时，通过 next 数组回退
 		for j > 0 && pattern[i] != pattern[j] {
-			j = next[j-1]
+			j = next[j-1] // 这里相当于字符不匹配的时候，我们要回到上一个次长的公共子串的长度
 		}
 		// 如果匹配，前缀长度增加
 		if pattern[i] == pattern[j] {
@@ -42,9 +36,6 @@ func kmpSearch(text, pattern string) int {
 	}
 	// 计算模式串的 next 数组
 	next := buildNext(pattern)
-	fmt.Println("=============next=================")
-	fmt.Printf("%#v\n", next)
-	fmt.Println("==============================")
 	j := 0 // pattern 指针
 	for i := 0; i < n; i++ {
 		// 当不匹配时，利用 next 数组回溯模式串指针 j
