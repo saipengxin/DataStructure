@@ -9,7 +9,7 @@ import (
 func buildNext(pattern string) []int {
 	m := len(pattern)
 	next := make([]int, m)
-	j := 0 // 表示当前匹配的前缀长度
+	j := 0 // 代表前缀结尾字符的下标
 	// next[0] 固定为 0
 	next[0] = 0
 	// 从 i=1 开始计算 next 数组
@@ -20,7 +20,7 @@ func buildNext(pattern string) []int {
 		}
 		// 如果匹配，前缀长度增加
 		if pattern[i] == pattern[j] {
-			j++
+			j++ // 我们需要的是公共串的长度，而字符串长度 = 结尾字符下标 + 1
 		}
 		next[i] = j
 	}
