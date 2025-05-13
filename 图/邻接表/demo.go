@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 // 顶点表结构
 type VertexNode struct {
 	data      int       // 数据域
@@ -17,6 +19,8 @@ type GraphAdjList struct {
 	numEdges int
 	adjList  []VertexNode
 }
+
+var visited map[int]bool
 
 // 创建图（邻接表）
 // 参数：顶点数量，边列表（每条边表示为 [from, to, weight]）
@@ -59,4 +63,54 @@ func CreateALGraph(numNodes int, edges [][3]int) *GraphAdjList {
 	return graph
 }
 
-func main() {}
+// 深度优先遍历
+func (m *GraphAdjList) DFS(index int) {
+	if m.numNodes == 0 {
+		return
+	}
+	// 将对应的结点设置为已访问
+	visited[index] = true
+
+	// 对顶点进行业务操作
+	fmt.Println(m.adjList[index].data)
+
+	for p := m.adjList[index].firstedge; p != nil; p = p.next {
+		if !visited[p.adjvex] {
+			m.DFS(p.adjvex)
+		}
+	}
+}
+
+// DFSTraverse 邻接矩阵的深度遍历操作，确保每一个结点都执行深度遍历
+func (m *GraphAdjList) DFSTraverse() {
+	if m.numNodes == 0 {
+		return
+	}
+
+	// 先将所有结点都设置为未访问
+	visited = make(map[int]bool)
+	for i := 0; i < len(m.adjList); i++ {
+		visited[i] = false
+	}
+
+	// 执行DFS遍历
+	for index, _ := range m.adjList {
+		if visited[index] {
+			continue
+		}
+		m.DFS(index)
+	}
+}
+
+func main() {
+	edges := [][3]int{
+		{0, 1, 1},
+		{0, 2, 1},
+		{1, 2, 1},
+		{3, 4, 1},
+	}
+
+	matrix := CreateALGraph(5, edges)
+	fmt.Println("Adjacency Matrix:")
+	matrix.DFSTraverse()
+}

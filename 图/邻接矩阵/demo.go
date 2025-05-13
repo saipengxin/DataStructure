@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"container/list"
+	"fmt"
+)
 
 type MGraph struct {
 	Vertex   []int   // 顶点表
@@ -85,6 +88,53 @@ func (m *MGraph) DFSTraverse() {
 	}
 }
 
+// ===================================
+
+func (m *MGraph) BFS(index int) {
+	if m.numNodes == 0 {
+		return
+	}
+
+	queue := list.New()
+	queue.PushBack(index)
+
+	for queue.Len() > 0 {
+		e := queue.Remove(queue.Front()).(int)
+
+		fmt.Println(m.Vertex[e])
+
+		// 访问当前结点的所有邻接结点，并放入队列
+		for i, v := range m.Arc[e] {
+			if v == 1 && !visited[i] {
+				queue.PushBack(i)
+				visited[i] = true
+			}
+		}
+	}
+}
+
+func (m *MGraph) BFSTraverse() {
+	if m.numNodes == 0 {
+		return
+	}
+
+	// 先将所有结点都设置为未访问
+	visited = make(map[int]bool)
+	for i := 0; i < len(m.Vertex); i++ {
+		visited[i] = false
+	}
+
+	// 执行DFS遍历
+	for index, _ := range m.Vertex {
+		// 如果是连通图，第一次执行DFS就会将所有顶点都遍历完成，所以只执行一遍
+		// 循环是为了防止非连通图，第一次遍历只能遍历一个连通分量，还有剩余的顶点不能遍历到
+		if visited[index] {
+			continue
+		}
+		m.BFS(index)
+	}
+}
+
 func main() {
 	n := []int{0, 1, 2, 3, 4}
 	edges := [][2]int{
@@ -103,5 +153,5 @@ func main() {
 		fmt.Println()
 	}
 
-	matrix.DFSTraverse()
+	matrix.BFSTraverse()
 }
