@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"container/list"
+	"fmt"
+)
 
 // 顶点表结构
 type VertexNode struct {
@@ -99,6 +102,50 @@ func (m *GraphAdjList) DFSTraverse() {
 			continue
 		}
 		m.DFS(index)
+	}
+}
+
+// ============================
+
+func (m *GraphAdjList) BFS(index int) {
+	if m.numNodes == 0 {
+		return
+	}
+	queue := list.New()
+	queue.PushBack(index)
+	visited[index] = true
+	for queue.Len() > 0 {
+		e := queue.Remove(queue.Front()).(int)
+
+		fmt.Println(m.adjList[e].data)
+
+		// 访问当前结点的所有邻接结点，并放入队列
+		for p := m.adjList[e].firstedge; p != nil; p = p.next {
+			if !visited[p.adjvex] {
+				queue.PushBack(p.adjvex)
+				visited[p.adjvex] = true
+			}
+		}
+	}
+}
+
+func (m *GraphAdjList) BFSTraverse() {
+	if m.numNodes == 0 {
+		return
+	}
+
+	// 先将所有结点都设置为未访问
+	visited = make(map[int]bool)
+	for i := 0; i < len(m.adjList); i++ {
+		visited[i] = false
+	}
+
+	// 保证所有连通分量都能被遍历
+	for index, _ := range m.adjList {
+		if visited[index] {
+			continue
+		}
+		m.BFS(index)
 	}
 }
 

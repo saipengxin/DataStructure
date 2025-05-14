@@ -94,10 +94,9 @@ func (m *MGraph) BFS(index int) {
 	if m.numNodes == 0 {
 		return
 	}
-
 	queue := list.New()
 	queue.PushBack(index)
-
+	visited[index] = true
 	for queue.Len() > 0 {
 		e := queue.Remove(queue.Front()).(int)
 
